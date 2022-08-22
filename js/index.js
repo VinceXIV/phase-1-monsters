@@ -50,5 +50,37 @@ document.addEventListener('DOMContentLoaded', event =>{
             monsterContainer.append(domMonster)
         })
     }
+
+
+    const createMonster = document.getElementById('create-monster')
+    createMonster.innerHTML = `<div>
+        <form>
+            <input type="text" id="monster-name" placeholder="name..."></input>
+            <input type="text" id="monster-age" placeholder="age..."></input>
+            <input type="text" id="monster-description" placeholder="description..."></input>
+            <input type="submit" value="create"></input>
+        </form>
+    </div>`
+
+    const createMonsterForm = createMonster.querySelector('form')
+    createMonsterForm.addEventListener('submit', event =>{
+        createMonsterForm.reset()
+        fetch('http://localhost:3000/monsters', {
+            method: 'POST',
+            headers: {
+                "Content-Type": 'application/json',
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(
+                {
+                    "name": createMonsterForm.querySelector('#monster-name').value,
+                    "age": createMonsterForm.querySelector('#monster-age').value,
+                    "description": createMonsterForm.querySelector('#monster-description').value
+                }
+            )
+        })
+        .then(result => result.json())
+        .then(data => console.log(data))
+    })
 })
 
